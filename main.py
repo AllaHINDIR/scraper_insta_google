@@ -20,7 +20,7 @@ if __name__ == "__main__":
     for search_key in search_keys:
         image_scrapper = GoogleImageScraper(webdriver_path,image_path,search_key,number_of_images,min_resolution,max_resolution)
         image_urls = image_scrapper.find_image_urls()
-        #image_scrapper.save_images(image_urls)
+
     
     #Release resources    
     del image_scrapper
