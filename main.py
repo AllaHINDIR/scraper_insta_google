@@ -11,10 +11,12 @@ if __name__ == "__main__":
     #Add new search key into array ["cat","t-shirt","apple","orange","pear","fish"]
     search_keys= ['emmanuelmacron','cristiano ronaldo','trump donald']
 
+
+
     #Parameters
     number_of_images = 2
     min_resolution=(0,0)
-    max_resolution=(600,600)
+    max_resolution=(10000,10000)
 
     #Main program
     for search_key in search_keys:
