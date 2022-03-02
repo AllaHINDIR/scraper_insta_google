@@ -1,4 +1,4 @@
-
+#If an image respect the resolution, it will be saved
 import os
 import requests
 import io
