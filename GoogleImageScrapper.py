@@ -58,13 +58,6 @@ class GoogleImageScraper():
 
 
     def find_image_urls(self):
-        """
-            This function search and return a list of image urls based on the search key.
-            Example:
-                google_image_scraper = GoogleImageScraper("webdriver_path","image_path","search_key",number_of_photos)
-                image_urls = google_image_scraper.find_image_urls()
-                
-        """
         print("[INFO] Scraping for image link... Please wait.")
         image_urls=[]
         count = 0
