@@ -39,3 +39,244 @@ def save_images(self, image_urls):
             pass
     print(
         "[INFO] Download Completed. Please note that some photos are not downloaded as it is not in the right format (e.g. jpg, jpeg, png)")
+
+def get_actors():
+    sparql.setQuery("""
+    SELECT DISTINCT ?human ?humanLabel ?humanDescription ?birth ?linkcount
+    WHERE
+    {
+      {
+      SELECT ?human ?humanLabel ?humanDescription ?birth ?linkcount WHERE {
+      VALUES ?profession {wd:Q33999}
+      ?human wdt:P31 wd:Q5.    
+      ?human wdt:P106 ?profession.
+      ?human wdt:P569 ?birth.
+      ?human wikibase:sitelinks ?linkcount.
+      FILTER("1980-01-01"^^xsd:dateTime <= ?birth).
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+      }
+      LIMIT 3000
+    }
+    }
+    ORDER BY DESC (?linkcount)
+    LIMIT 40
+
+    """)
+
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+
+    with open('actors.json', 'w') as actors_fichier:
+        json.dump(results, actors_fichier)
+    print("-----------------------------get_actors--------------------------------")
+    # pprint(results)
+
+
+def get_singer():
+    sparql.setQuery("""
+    SELECT DISTINCT ?human ?humanLabel ?humanDescription ?birth ?linkcount
+    WHERE
+    {
+      {
+      SELECT ?human ?humanLabel ?humanDescription ?birth ?linkcount WHERE {
+      VALUES ?profession {wd:Q177220}
+      ?human wdt:P31 wd:Q5.    
+      ?human wdt:P106 ?profession.
+      ?human wdt:P569 ?birth.
+      ?human wikibase:sitelinks ?linkcount.
+      FILTER("1980-01-01"^^xsd:dateTime <= ?birth).
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+      }
+      LIMIT 3000
+    }
+    }
+    ORDER BY DESC (?linkcount)
+    LIMIT 40
+
+    """)
+
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+    with open('singers.json', 'w') as singers_fichier:
+        json.dump(results, singers_fichier)
+    print("-----------------------------get_singer--------------------------------")
+
+
+def get_politician():
+    sparql.setQuery("""
+    SELECT DISTINCT ?human ?humanLabel ?humanDescription ?birth ?linkcount
+    WHERE
+    {
+      {
+      SELECT ?human ?humanLabel ?humanDescription ?birth ?linkcount WHERE {
+      VALUES ?profession {wd:Q82955}
+      ?human wdt:P31 wd:Q5.    
+      ?human wdt:P106 ?profession.
+      ?human wdt:P569 ?birth.
+      ?human wikibase:sitelinks ?linkcount.
+      FILTER("1950-01-01"^^xsd:dateTime <= ?birth).
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+      }
+      LIMIT 3000
+    }
+    }
+    ORDER BY DESC (?linkcount)
+    LIMIT 40
+    """)
+
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+    with open('politician.json', 'w') as politician_fichier:
+        json.dump(results, politician_fichier)
+    print("-----------------------------get_politician--------------------------------")
+
+
+def get_footballeur():
+    sparql.setQuery("""
+    SELECT DISTINCT ?human ?humanLabel ?humanDescription ?birth ?linkcount
+    WHERE
+    {
+      {
+      SELECT ?human ?humanLabel ?humanDescription ?birth ?linkcount WHERE {
+      VALUES ?profession {wd:Q937857}
+      ?human wdt:P31 wd:Q5.    
+      ?human wdt:P106 ?profession.
+      ?human wdt:P569 ?birth.
+      ?human wikibase:sitelinks ?linkcount.
+      FILTER("1980-01-01"^^xsd:dateTime <= ?birth).
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+      }
+      LIMIT 3000
+    }
+    }
+    ORDER BY DESC (?linkcount)
+    LIMIT 40
+    """)
+
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+    with open('footbolleur.json', 'w') as footbolleur_fichier:
+        json.dump(results, footbolleur_fichier)
+    print("-----------------------------get_footballeur--------------------------------")
+
+
+def get_dancers():
+    sparql.setQuery("""
+    SELECT DISTINCT ?human ?humanLabel ?humanDescription ?birth ?linkcount
+    WHERE
+    {
+      {
+      SELECT ?human ?humanLabel ?humanDescription ?birth ?linkcount WHERE {
+      VALUES ?profession {wd:Q5716684}
+      ?human wdt:P31 wd:Q5.    
+      ?human wdt:P106 ?profession.
+      ?human wdt:P569 ?birth.
+      ?human wikibase:sitelinks ?linkcount.
+      FILTER("1980-01-01"^^xsd:dateTime <= ?birth).
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+      }
+      LIMIT 30000
+    }
+    }
+    ORDER BY DESC (?linkcount)
+    LIMIT 40
+    """)
+
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+    with open('dancers.json', 'w') as dancers_fichier:
+        json.dump(results, dancers_fichier)
+    print("-----------------------------get_dancers--------------------------------")
+
+
+def get_basketbolleur():
+    sparql.setQuery("""
+    SELECT DISTINCT ?human ?humanLabel ?humanDescription ?birth ?linkcount
+    WHERE
+    {
+      {
+      SELECT ?human ?humanLabel ?humanDescription ?birth ?linkcount WHERE {
+      VALUES ?profession {wd:Q3665646}
+      ?human wdt:P31 wd:Q5.    
+      ?human wdt:P106 ?profession.
+      ?human wdt:P569 ?birth.
+      ?human wikibase:sitelinks ?linkcount.
+      FILTER("1980-01-01"^^xsd:dateTime <= ?birth).
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+      }
+      LIMIT 30000
+    }
+    }
+    ORDER BY DESC (?linkcount)
+    LIMIT 40
+    """)
+
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+    with open('basketbolleur.json', 'w') as basketbolleur_fichier:
+        json.dump(results, basketbolleur_fichier)
+    print("-----------------------------get_basketbolleur--------------------------------")
+
+def get_youtubeur():
+    sparql.setQuery("""
+    SELECT DISTINCT ?human ?humanLabel ?humanDescription ?birth ?linkcount
+    WHERE
+    {
+      {
+      SELECT ?human ?humanLabel ?humanDescription ?birth ?linkcount WHERE {
+      VALUES ?profession {wd:Q17125263}
+      ?human wdt:P31 wd:Q5.    
+      ?human wdt:P106 ?profession.
+      ?human wdt:P569 ?birth.
+      ?human wikibase:sitelinks ?linkcount.
+      FILTER("1980-01-01"^^xsd:dateTime <= ?birth).
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+      }
+      LIMIT 30000
+    }
+    }
+    ORDER BY DESC (?linkcount)
+    LIMIT 40
+    """)
+
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+    with open('youtubeur.json', 'w') as youtubeur_fichier:
+        json.dump(results, youtubeur_fichier)
+    print("-----------------------------get_youtubeur--------------------------------")
+
+def get_animateur():
+    sparql.setQuery("""
+    SELECT DISTINCT ?human ?humanLabel ?humanDescription ?birth ?linkcount
+    WHERE
+    {
+      {
+      SELECT ?human ?humanLabel ?humanDescription ?birth ?linkcount WHERE {
+      VALUES ?profession {wd:Q13590141}
+      ?human wdt:P31 wd:Q5.    
+      ?human wdt:P106 ?profession.
+      ?human wdt:P569 ?birth.
+      ?human wikibase:sitelinks ?linkcount.
+      FILTER("1980-01-01"^^xsd:dateTime <= ?birth).
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en" }
+      }
+      LIMIT 30000
+    }
+    }
+    ORDER BY DESC (?linkcount)
+    LIMIT 40
+    """)
+
+    sparql.setReturnFormat(JSON)
+
+    results = sparql.query().convert()
+    with open('animateurs.json', 'w') as animateur_fichier:
+        json.dump(results, animateur_fichier)
+    print("-----------------------------get_animateurs--------------------------------")
