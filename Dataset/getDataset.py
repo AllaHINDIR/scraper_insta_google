@@ -1,8 +1,10 @@
 import json
 import time
+from pprint import pprint
+
 from SPARQLWrapper import SPARQLWrapper, JSON
 from concurrent.futures import ProcessPoolExecutor
-from multiprocessing import Pool
+from multiprocessing.dummy import Pool
 import getOccupation
 
 endpoint = "https://query.wikidata.org/bigdata/namespace/wdq/sparql"
@@ -42,14 +44,13 @@ def get_persons(occupation):
     """)
 
     sparql.setReturnFormat(JSON)
-
     results = sparql.query().convert()
-
     with open(occupation['professionLabel']['value'] + '.json', 'w') as fichier:
         json.dump(results, fichier)
     print(
         "----------------------------- " + occupation['professionLabel']['value'] + " --------------------------------")
     # pprint(results)
+    return results
 
 
 """
@@ -79,13 +80,16 @@ def main() :
                 break
 
 """
+def main() :
+    if __name__ == '__main__':
+        start = time.time()
+        occupations = getOccupation.get_occupation()
+        with Pool(6) as process:
+            r = process.map(get_persons, [occupations['results']['bindings'][0], occupations['results']['bindings'][1],
+                                       occupations['results']['bindings'][2], occupations['results']['bindings'][3],
+                                       occupations['results']['bindings'][4], occupations['results']['bindings'][5]])
+        end = time.time()
+        print(end - start)
+        return r
 
-if __name__ == '__main__':
-    start = time.time()
-    occupations = getOccupation.get_occupation()
-    with Pool(6) as process:
-        process.map(get_persons, [occupations['results']['bindings'][0], occupations['results']['bindings'][1],
-                                   occupations['results']['bindings'][2], occupations['results']['bindings'][3],
-                                   occupations['results']['bindings'][4], occupations['results']['bindings'][5]])
-    end = time.time()
-    print(end - start)
+main()
