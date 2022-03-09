@@ -2,11 +2,6 @@
 #import selenium drivers
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
-from pyvirtualdisplay import Display
 
 #import helper libraries
 import time
@@ -63,7 +58,7 @@ class GoogleImageScraper():
         count = 0
         number_of_unable_click = 0
         self.driver.get(self.url)
-        time.sleep(3)
+        time.sleep(1.5)
         numero_image = 1
         while self.number_of_images > count:
             try:
@@ -102,7 +97,7 @@ class GoogleImageScraper():
                 element = self.driver.find_element_by_class_name("mye4qd")
                 element.click()
                 print("[INFO] Loading more photos")
-                time.sleep(3)
+                time.sleep(1.5)
             except Exception:  
                 time.sleep(1)
             numero_image += 1

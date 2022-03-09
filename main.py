@@ -5,6 +5,7 @@ from GoogleImageScrapper import GoogleImageScraper
 from patch import webdriver_executable
 import get_celebrities
 from multiprocessing.dummy import Pool
+import concurrent.futures
 
 # search key (celebrities)
 # search_keys= ['emmanuelmacron','cristiano ronaldo','trump donald']
@@ -30,8 +31,7 @@ def get_images(search_key) :
 
 if __name__ == "__main__":
     start = time.time()
-    with Pool(30) as process :
-        process.map(get_images,search_keys)
-    process.join()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor :
+        executor.map(get_images,search_keys)
     end = time.time()
     print(end-start)
