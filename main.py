@@ -4,13 +4,12 @@ import time
 from GoogleImageScrapper import GoogleImageScraper
 from patch import webdriver_executable
 import get_celebrities
-from multiprocessing.dummy import Pool
 import concurrent.futures
 
 # search key (celebrities)
 # search_keys= ['emmanuelmacron','cristiano ronaldo','trump donald']
 search_keys2 = get_celebrities.get_name_celebrities()
-search_keys = [search_keys2[i] for i in range(1, 31)]
+search_keys = [search_keys2[i] for i in range(0, len(search_keys2))]
 
 def get_images(search_key) :
     # Define file path
@@ -18,7 +17,7 @@ def get_images(search_key) :
     image_path = os.path.normpath(os.path.join(os.getcwd(), 'photos'))
 
     # Parameters
-    number_of_images = 20
+    number_of_images = 50
     min_resolution = (0, 0)
     max_resolution = (10000, 10000)
 
@@ -31,7 +30,7 @@ def get_images(search_key) :
 
 if __name__ == "__main__":
     start = time.time()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor :
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(search_keys)) as executor :
         executor.map(get_images,search_keys)
     end = time.time()
     print(end-start)

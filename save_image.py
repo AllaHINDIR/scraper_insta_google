@@ -9,7 +9,7 @@ def save_image( image_url, image_number,images_path,search_key,min_resolution,ma
     try:
         print("[INFO] Image url:%s" % (image_url))
         search_string = ''.join(e for e in search_key if e.isalpha() or e.isspace())
-        image = requests.get(image_url, timeout=5)
+        image = requests.get(image_url, timeout=10)
         if image.status_code == 200:
             with Image.open(io.BytesIO(image.content)) as image_from_web:
                 try:

@@ -1,13 +1,5 @@
 def save_images(self, image_urls):
     # save images into file directory
-    """
-        This function takes in an array of image urls and save it into the prescribed image path/directory.
-        Example:
-            google_image_scraper = GoogleImageScraper("webdriver_path","image_path","search_key",number_of_photos)
-            image_urls=["https://example_1.jpg","https://example_2.jpg"]
-            google_image_scraper.save_images(image_urls)
-
-    """
     print("[INFO] Saving Image... Please wait...")
     for indx, image_url in enumerate(image_urls):
         try:
