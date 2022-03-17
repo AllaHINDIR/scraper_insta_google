@@ -1,11 +1,10 @@
 import io
-
 import requests
 from PIL import Image
-
 from storage import connexion
 from storage import celebrity_schema
 from cash import cash_image
+
 
 def NotExist(name ,image ,url ) :
     connexion.get_connexion()
@@ -22,16 +21,24 @@ def NotExist(name ,image ,url ) :
                         print('[STOP] Image already exists.')
                         return False
                     else:
-                        #return cash_image.open_cv(image,img.image)  #return true if they are not the same
-                        print(type(img.image))
+                        imgfile = io.BytesIO(img.image.read())
+                        pil_image = Image.open(imgfile)
+
+                        if cash_image.open_cv(image,pil_image) is False :  #return true if they are not the same
+                            print('[STOP] Image already exists.')
+                            return False
             print('[INFO] Image not already exists.')
             return True
     except Exception as ex:
         print('[ERROR] There is an exception : ',ex)
 
+"""
 image = requests.get('https://www.jeunesfooteux.com/photo/art/grande/62997216-45523455.jpg?v=1647163193',timeout=10)
 img1 = Image.open(io.BytesIO(image.content))
 image2 = requests.get('https://static.onzemondial.com/8/2022/03/photo_article/766605/301457/1200-L-manchester-united-limination-historique-pour-cristiano-ronaldo-une-stat-vieille-de-16-ans-tombe.jpg',timeout=10)
-img2 = Image.open(io.BytesIO(image.content))
+img2 = Image.open(io.BytesIO(image2.content))
+"""
 
-print(NotExist('C7',img1,'https://www.jeunesfooteux.com/photo/art/grande/62997216-45523455.jpg?v=164716319'))
+image3 = requests.get('https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/1200px-President_Barack_Obama.jpg',timeout=10)
+img3 = Image.open(io.BytesIO(image3.content))
+print(NotExist('barack obama',img3,'qlq chose'))

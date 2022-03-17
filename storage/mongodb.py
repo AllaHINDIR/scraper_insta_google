@@ -1,52 +1,45 @@
-"""
-import pymongo
-
-#the connexion
-client = pymongo.MongoClient("mongodb://localhost:27017/")
-db = client["ingeniance"]
-
-#Get the list of our DBs
-print(client.list_database_names())
-
-
-
-#Crate a collection
-collection = db["celebrity"]
-"""
 import io
 from tempfile import TemporaryFile
-
-import numpy
 import requests
 from PIL import Image
-import cv2
 import celebrity_schema
 import connexion
 
 connexion.get_connexion()
 
-def store_images(name ,image ,url) :
-
+def save_celebrity(name ,image ,url):
     celebrity = celebrity_schema.Celebrity(name = name)
-
     fp = TemporaryFile()
     image.save(fp,"JPEG")
-
-
     image_document = celebrity_schema.OneImage(url=url)
     #image_document.image.replace(image,filename=name + '.jpg')
     image_document.image.put(fp,filename=name + '.jpg')
-
     celebrity.images.append(image_document)
-
     celebrity.save()
-    print('[INFO] Image saved.')
+    print('[INFO] Image and Celebrity are saved.')
 
-image = requests.get('https://www.jeunesfooteux.com/photo/art/grande/62997216-45523455.jpg?v=1647163193',timeout=10)
+def store_images(name ,image ,url) :
+    try :
+        celebrity_count = celebrity_schema.Celebrity.objects(name=name).count()
+        if celebrity_count == 0 :
+            print('[INFO] The celecbrity dont exists !...Wait to add it to DB.')
+            save_celebrity(name,image,url)
+        else:
+            for celebrity in celebrity_schema.Celebrity.objects(name=name):
+                fp = TemporaryFile()
+                image.save(fp, "JPEG")
+                image_document = celebrity_schema.OneImage(url=url)
+                image_document.image.put(fp, filename=name + '.jpg')
+                celebrity.images.append(image_document)
+                celebrity.save()
+                print('[INFO] Image saved.')
+    except Exception as ex:
+        print('[ERROR] There is an exception : ',ex)
+
+
+image = requests.get('https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/1200px-President_Barack_Obama.jpg',timeout=10)
 img1 = Image.open(io.BytesIO(image.content))
-print(img1.format)
-
-store_images('C7',img1,'https://www.jeunesfooteux.com/photo/art/grande/62997216-45523455.jpg?v=1647163193')
+store_images('barack obama',img1,'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8d/President_Barack_Obama.jpg/1200px-President_Barack_Obama.jpg')
 
 
 

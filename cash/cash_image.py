@@ -1,5 +1,4 @@
 import io
-from tempfile import TemporaryFile
 
 import numpy
 import numpy as np
@@ -8,6 +7,8 @@ from PIL import Image, ImageChops
 import hashlib
 import cv2
 import imutils
+from numpy import average
+from skimage.metrics import structural_similarity as ssim
 
 
 ## methode with md5
@@ -70,21 +71,24 @@ def main_md5():
 
 
 # methode PIL
-def pil():
-    image = requests.get('https://www.jeunesfooteux.com/photo/art/grande/62997216-45523455.jpg?v=1647163193',
-                         timeout=10)
-    img1 = Image.open(io.BytesIO(image.content))
-    image2 = requests.get('https://www.jeunesfooteux.com/photo/art/grande/62997216-45523455.jpg?v=1647163193',
-                          timeout=10)
-    img2 = Image.open(io.BytesIO(image2.content))
+def pil(image1,image2):
 
-    diff = ImageChops.difference(img1, img2)
+    diff = ImageChops.difference(image1,image2)
 
     if diff.getbbox():
         diff.show()
     else:
-        print('Bhal Bhal :) ')
+        print('Kif Kif :) ')
 
+def mse(imageA, imageB):
+    # the 'Mean Squared Error' between the two images is the
+    # sum of the squared difference between the two images;
+    # NOTE: the two images must have the same dimension
+    err = np.sum((imageA.astype("float") - imageB.astype("float")) ** 2)
+    err /= float(imageA.shape[0] * imageA.shape[1])
+    return err
+    # return the MSE, the lower the error, the more "similar"
+    # the two images are
 
 # methode Opencv
 def open_cv(image1,image2):
@@ -98,14 +102,29 @@ def open_cv(image1,image2):
         img1 = cv2.cvtColor(numpy_image1, cv2.COLOR_RGB2BGR)
         img2 = cv2.cvtColor(numpy_image2, cv2.COLOR_RGB2BGR)
 
-        #img1 = cv2.imread(fp1)
-        #img2 = cv2.imread(fp2)
+        #img1 = cv2.imread(image1)
+        #img2 = cv2.imread(image2)
 
-        dimensions = img2.shape
-        image3 = cv2.resize(img1, (dimensions[1], dimensions[0]))
+        dim = (500,500)
+        img1 = cv2.resize(img1,dim,interpolation=cv2.INTER_AREA)
+        img2 = cv2.resize(img2,dim,interpolation=cv2.INTER_AREA)
+
+        x1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+        x2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+
+
         # cette methode compare les couleurs (B/R/V)
-        diff = cv2.subtract(img2, image3)
+        diff = cv2.subtract(img1, img2)
+        #print(diff)
         result = not np.any(diff)  # if diff is all zero it will return False
+
+
+        m = mse(x1, x2)
+        s = ssim(x1, x2)
+        print ("mse: %s, ssim: %s" % (m, s))
+        #Par ImageChops (PIL)
+        pil(image1,image2)
+
         if result is True:
             print("Images are the same !")
             print('[STOP] Image already exist.')
@@ -118,11 +137,12 @@ def open_cv(image1,image2):
         print('[ERROR] There are an exception : ', ex)
 
 
-
 """
 image = requests.get('https://www.jeunesfooteux.com/photo/art/grande/62997216-45523455.jpg?v=1647163193',timeout=10)
 img1 = Image.open(io.BytesIO(image.content))
 image2 = requests.get('https://static.onzemondial.com/8/2022/03/photo_article/766605/301457/1200-L-manchester-united-limination-historique-pour-cristiano-ronaldo-une-stat-vieille-de-16-ans-tombe.jpg',timeout=10)
 img2 = Image.open(io.BytesIO(image2.content))
-open_cv(img1,img2)
+open_cv(img1,img1)
 """
+
+

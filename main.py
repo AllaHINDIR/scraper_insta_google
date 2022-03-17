@@ -7,9 +7,10 @@ import get_celebrities
 import concurrent.futures
 
 # search key (celebrities)
-# search_keys= ['emmanuelmacron','cristiano ronaldo','trump donald']
+#search_keys= ['emmanuelmacron','trump donald','barack obama','kim jong un','kobe bryant','michael jackson','adele','albert einstein','nelson mandela']
 search_keys2 = get_celebrities.get_name_celebrities()
-search_keys = [search_keys2[i] for i in range(0, len(search_keys2))]
+search_keys = [search_keys2[i] for i in range(163, 200)]
+print(search_keys)
 
 def get_images(search_key) :
     # Define file path
@@ -30,7 +31,7 @@ def get_images(search_key) :
 
 if __name__ == "__main__":
     start = time.time()
-    with concurrent.futures.ThreadPoolExecutor(max_workers=len(search_keys)) as executor :
+    with concurrent.futures.ThreadPoolExecutor(max_workers=9) as executor :
         executor.map(get_images,search_keys)
     end = time.time()
     print(end-start)
